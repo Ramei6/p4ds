@@ -9,9 +9,8 @@ file_name = "emprise-batie-et-non-batie"
 
 if response.status_code == 200:
     data = response.json()
-    with open("Data/" + file_name +".txt", "w") as f:
-        f.write('caca')
-        #f.write(json.dumps(data))
+    with open("Data/" + file_name +".txt", "w") as f: 
+        f.write(json.dumps(data))
 else:
     print("Erreur :", response.status_code)
 
