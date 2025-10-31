@@ -1,4 +1,4 @@
-En cas de demande de réutilisation
+En cas de demande de réutilisation 
 GAUTIER
 Glenn
 glenn.gautier@ensae.fr
