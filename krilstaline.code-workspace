@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "p4ds",
+			"path": "../ENSAE/p4ds"
+		}
+	],
+	"settings": {}
+}
