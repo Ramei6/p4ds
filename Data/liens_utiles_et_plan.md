@@ -12,20 +12,31 @@ En vous remerciant d’avance de nous donner accès aux données de la ville de 
 
 [Données du bâti, utile pour obtenir une expression de la densité du bâti]
 [Emprise bâti et non-bâti :](https://opendata.paris.fr/explore/dataset/emprise-batie-et-non-batie/map/?location=17,48.86254,2.40412&basemap=jawg.streets)
-[Espaces non-bâtis :] https://opendata.paris.fr/pages/catalogue/?disjunctive.theme&disjunctive.publisher&sort=modified&refine.theme=Urbanisme%20et%20Logements
-[Volumes-bâtis :](https://opendata.paris.fr/explore/dataset/volumesbatisparis/map/?location=17,48.84008,2.39706&basemap=jawg.streets)
-[Hauteur maximale constructible :](https://opendata.paris.fr/explore/dataset/plub_hauteur/map/?basemap=jawg.dark&location=13,48.85257,2.33288)
-Données environnementales (présences d’arbres, d’espaces verts)
-https://opendata.paris.fr/explore/dataset/ilots-de-fraicheur-espaces-verts-frais/map/?disjunctive.arrondissement&disjunctive.ouvert_24h&disjunctive.horaires_periode&disjunctive.statut_ouverture&disjunctive.canicule_ouverture&disjunctive.ouverture_estivale_nocturne&disjunctive.type&basemap=jawg.dark&location=12,48.85903,2.34748
-https://opendata.paris.fr/explore/dataset/arbres-plantes-hors-peuplement-forestier/map/?location=16,48.83322,2.34862&basemap=jawg.streets
-https://opendata.paris.fr/explore/dataset/espaces_verts/map/?disjunctive.type_ev&disjunctive.categorie&disjunctive.adresse_codepostal&disjunctive.presence_cloture&basemap=jawg.dark&location=11,48.83239,2.34692
-https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.espece&disjunctive.typeemplacement&disjunctive.arrondissement&disjunctive.genre&disjunctive.libellefrancais&disjunctive.varieteoucultivar&disjunctive.stadedeveloppement&disjunctive.remarquable
-https://opendata.paris.fr/explore/dataset/plub_arbralign/map/?basemap=jawg.dark&location=15,48.85879,2.33145
 
-Colonnes à verre : https://opendata.paris.fr/explore/dataset/dechets-menagers-points-dapport-volontaire-colonnes-a-verre/information/
-Secteurs de déficit d’arbres : https://opendata.paris.fr/explore/dataset/plub_srv_daev/map/?basemap=jawg.dark&location=12,48.86167,2.33815
-Marchés découverts
-https://opendata.paris.fr/explore/dataset/marches-decouverts/information/?disjunctive.produit&disjunctive.ardt&disjunctive.jours_tenue&disjunctive.gestionnaire
+[Espaces non-bâtis](https://opendata.paris.fr/pages/catalogue/?disjunctive.theme&disjunctive.publisher&sort=modified&refine.theme=Urbanisme%20et%20Logements)
+
+[Volumes-bâtis :](https://opendata.paris.fr/explore/dataset/volumesbatisparis/map/?location=17,48.84008,2.39706&basemap=jawg.streets)
+
+[Hauteur maximale constructible :](https://opendata.paris.fr/explore/dataset/plub_hauteur/map/?basemap=jawg.dark&location=13,48.85257,2.33288)
+
+Données environnementales (présences d’arbres, d’espaces verts)
+
+à l'air meilleur que espace vert, car plus précis (ex, ne prend pas les rues) [Ilots de fraîcheur - Espaces verts "frais"](https://opendata.paris.fr/explore/dataset/ilots-de-fraicheur-espaces-verts-frais/map/?disjunctive.arrondissement&disjunctive.ouvert_24h&disjunctive.horaires_periode&disjunctive.statut_ouverture&disjunctive.canicule_ouverture&disjunctive.ouverture_estivale_nocturne&disjunctive.type&basemap=jawg.dark&location=12,48.85903,2.34748)
+
+[Les arbres d'alignement (plantés hors peuplement forestier)](https://opendata.paris.fr/explore/dataset/arbres-plantes-hors-peuplement-forestier/map/?location=16,48.83322,2.34862&basemap=jawg.streets)
+
+[Espaces verts et assimilés](https://opendata.paris.fr/explore/dataset/espaces_verts/map/?disjunctive.type_ev&disjunctive.categorie&disjunctive.adresse_codepostal&disjunctive.presence_cloture&basemap=jawg.dark&location=11,48.83239,2.34692)
+
+plus simple à utiliser, on a juste à compter le nb d'arbre --> [Arbres](https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.espece&disjunctive.typeemplacement&disjunctive.arrondissement&disjunctive.genre&disjunctive.libellefrancais&disjunctive.varieteoucultivar&disjunctive.stadedeveloppement&disjunctive.remarquable)
+
+[PLU bioclimatique - Alignements d'arbres et compositions arborées protégées](https://opendata.paris.fr/explore/dataset/plub_arbralign/map/?basemap=jawg.dark&location=15,48.85879,2.33145)
+
+Colonnes à verre : [point de collecte des verres](https://opendata.paris.fr/explore/dataset/dechets-menagers-points-dapport-volontaire-colonnes-a-verre/information/)
+
+Secteurs de déficit d’arbres : [déficit d'arbres et d'espaces végétalisés](https://opendata.paris.fr/explore/dataset/plub_srv_daev/map/?basemap=jawg.dark&location=12,48.86167,2.33815)
+
+[Marchés découverts](https://opendata.paris.fr/explore/dataset/marches-decouverts/information/?disjunctive.produit&disjunctive.ardt&disjunctive.jours_tenue&disjunctive.gestionnaire)
+
 Voirie et transport
 Stationnement :
 Stationnement sur voie publique - emprises 
@@ -51,26 +62,44 @@ Zones résidentielles (à Paris, une zone résidentielle correspond à l’avant
 Nom : zoneres
 Type : texte
 Exemple : 13P
+
 [Stationnement sur voie publique - emprises](https://opendata.paris.fr/explore/dataset/stationnement-sur-voie-publique-emprises/map/?disjunctive.regpri&disjunctive.regpar&disjunctive.typsta&disjunctive.arrond&disjunctive.locsta&disjunctive.zoneres&disjunctive.parite&disjunctive.signhor&disjunctive.signvert&disjunctive.confsign&disjunctive.typemob&basemap=jawg.dark&location=16,48.85864,2.38511)
+
 [Stationnement en ouvrage](https://opendata.paris.fr/explore/dataset/stationnement-en-ouvrage/map/?disjunctive.hauteur_max&disjunctive.gratuit&disjunctive.type_usagers&disjunctive.insee&disjunctive.tarif_pmr&disjunctive.type_ouvrage&disjunctive.info&disjunctive.id_entrees&disjunctive.arrdt&disjunctive.deleg&disjunctive.horaire_na&disjunctive.asc_surf&disjunctive.parc_amod&disjunctive.parc_relai&disjunctive.tarif_pr&disjunctive.tarif_res&disjunctive.zones_res&disjunctive.tf_pr_moto&basemap=jawg.dark&location=12,48.85489,2.39227)
 
 Des promesses de limitations … : [PLU bioclimatique - Limitations des parcs de stationnement](https://opendata.paris.fr/explore/dataset/plub_limstat/map/?basemap=jawg.dark&location=12,48.86072,2.33596)
 
 [Vélib](https://opendata.paris.fr/explore/dataset/velib-emplacement-des-stations/information/)
+
 [Taxi](https://opendata.paris.fr/explore/dataset/bornes-dappel-taxi/information/)
-(tenter d’avoir accès aux arrêts de bus ???) [arrêt de bus](https://opendata.paris.fr/explore/dataset/plan-de-voirie-mobiliers-urbains-abris-voyageurs-points-darrets-bus/information/?disjunctive.lib_level&disjunctive.num_pave&location=18,48.85808,2.40129&basemap=jawg.streets)
+(tenter d’avoir accès aux arrêts de bus ???) 
+
+[arrêt de bus](https://opendata.paris.fr/explore/dataset/plan-de-voirie-mobiliers-urbains-abris-voyageurs-points-darrets-bus/information/?disjunctive.lib_level&disjunctive.num_pave&location=18,48.85808,2.40129&basemap=jawg.streets)
+
 [Plan de voirie - Pavés mosaïques du Plan de voirie de Paris](https://opendata.paris.fr/explore/dataset/plan-de-voirie-paves-mosaiques-du-plan-de-voirie-de-paris/information/?disjunctive.numero_pave)
+
 [toilettes publiques](https://opendata.paris.fr/explore/dataset/plan-de-voirie-mobiliers-urbains-kiosques-toilettes-publiques-panneaux-publicita/information/?disjunctive.lib_level&disjunctive.num_pave)
+
 [Linéaire de  voie](https://opendata.paris.fr/explore/dataset/voie/map/?location=17,48.85704,2.37839&basemap=jawg.streets)
+
 [Tronçons de voie](https://opendata.paris.fr/explore/dataset/troncon_voie/information/)
+
 Très importants : [donne la surface des chaussées](https://opendata.paris.fr/explore/dataset/plan-de-voirie-chaussees/map/?disjunctive.num_pave&basemap=jawg.dark&location=17,48.86156,2.40738)
+
 [Voies privées fermées](https://opendata.paris.fr/explore/dataset/plan-de-voirie-voies-privees-fermees/map/?disjunctive.num_pave&location=16,48.84747,2.40013&basemap=jawg.streets)
+
 [Voies en escalier](https://opendata.paris.fr/explore/dataset/plan-de-voirie-voies-en-escalier/map/?disjunctive.num_pave&location=18,48.8602,2.40385&basemap=jawg.streets)
-Liaisons piétonnières et al.(à traiter/filtrer) : https://opendata.paris.fr/explore/dataset/plub_lpcppc/map/?basemap=jawg.dark&location=16,48.85975,2.37202
-Aire mixte véhicule piéton : https://opendata.paris.fr/explore/dataset/plan-de-voirie-aires-mixtes-vehicules-et-pietons/information/?disjunctive.num_pave
-Aire piétonne :https://opendata.paris.fr/explore/dataset/aires-pietonnes/map/?basemap=jawg.dark&location=15,48.85922,2.40317
-Zone de rencontre https://opendata.paris.fr/explore/dataset/zones-de-rencontre/information/?disjunctive.first_arrdt
-Aménagements cyclables : https://opendata.paris.fr/explore/dataset/amenagements-cyclables/map/?disjunctive.arrondissement&disjunctive.position_amenagement&disjunctive.vitesse_maximale_autorisee&disjunctive.source&disjunctive.amenagement&location=12,48.85898,2.34772&basemap=jawg.streets
+
+[Liaisons piétonnières et al.](https://opendata.paris.fr/explore/dataset/plub_lpcppc/map/?basemap=jawg.dark&location=16,48.85975,2.37202)(à traiter/filtrer) : 
+
+[Aire mixte véhicule piéton](https://opendata.paris.fr/explore/dataset/plan-de-voirie-aires-mixtes-vehicules-et-pietons/information/?disjunctive.num_pave)
+
+[Aire piétonne](https://opendata.paris.fr/explore/dataset/aires-pietonnes/map/?basemap=jawg.dark&location=15,48.85922,2.40317)
+
+[Zone de rencontre](https://opendata.paris.fr/explore/dataset/zones-de-rencontre/information/?disjunctive.first_arrdt)
+
+[Aménagements cyclables](https://opendata.paris.fr/explore/dataset/amenagements-cyclables/map/?disjunctive.arrondissement&disjunctive.position_amenagement&disjunctive.vitesse_maximale_autorisee&disjunctive.source&disjunctive.amenagement&location=12,48.85898,2.34772&basemap=jawg.streets)
+
 Voies et aménagemtns piétonniers (espace public hors espaces vert et service public) (données pas totalement complètes encore sniff) https://opendata.paris.fr/explore/dataset/plub_voie/map/?basemap=jawg.dark&location=16,48.85772,2.36687
 Permet d’obtenir la surface totale d’espace public :https://opendata.paris.fr/explore/dataset/plan-de-voirie-emprises-ilots-prives/map/?disjunctive.num_pave&basemap=jawg.dark&location=18,48.85918,2.4091
 [Espaces verts (autres données)](https://opendata.paris.fr/explore/dataset/plan-de-voirie-emprises-espaces-verts/map/?disjunctive.num_pave&location=15,48.85905,2.40146&basemap=jawg.streets)
@@ -211,8 +240,17 @@ Densité du bâti : âge des batiments
 Carte explicite de l’age
 Carte explicite de la densité
 
+Le but est d'avoir une ville efficace pour les habitants (bien être, accès aux transports, espace vert, ...) tout en minimisant les coûts d'entretient de chaussées.
+Pour voir l'efficacité de la voirie dans Paris on peut étudier la relation entre la voirie et le bâti croisée avec : 
 
-Pour voir l'efficacité de la voirie dans Paris on peut étudier la relation entre la voiries et le bâti croisée avec : 
-[ ] le niveau de vie 
-[ ] les transports [RATP]()
-[ ] les déchets ([Dans ma rue- Anomalies signalées](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742))
+- [ ] le niveau de vie (INSEE)
+
+- [ ] les transports publiques [RATP]()
+
+- [ ] Les secteurs étudié sont-ils salles déchets ([Dans ma rue- Anomalies signalées](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742))
+
+- [ ] bien être des habitant quantifié avec les espaces verts ou les arbres --> ([Arbres](https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.espece&disjunctive.typeemplacement&disjunctive.arrondissement&disjunctive.genre&disjunctive.libellefrancais&disjunctive.varieteoucultivar&disjunctive.stadedeveloppement&disjunctive.remarquable) et [espaces verts](https://opendata.paris.fr/explore/dataset/plan-de-voirie-emprises-espaces-verts/map/?disjunctive.num_pave&location=15,48.85905,2.40146&basemap=jawg.streets))
+
+- [ ] le stationnement se trouve souvent sur les voies donc on peut étudier le cas avec la voirie moins les places de parking publiques ([Stationnement sur voie publique - emprises](https://opendata.paris.fr/explore/dataset/stationnement-sur-voie-publique-emprises/map/?disjunctive.regpri&disjunctive.regpar&disjunctive.typsta&disjunctive.arrond&disjunctive.locsta&disjunctive.zoneres&disjunctive.parite&disjunctive.signhor&disjunctive.signvert&disjunctive.confsign&disjunctive.typemob&basemap=jawg.dark&location=16,48.85864,2.38511))
+
+- [ ] enlever les espaces verts pour étudier par arrondissement ()
