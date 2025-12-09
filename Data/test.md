@@ -85,7 +85,9 @@ SECTEURS
 [Arrondissements](https://opendata.paris.fr/explore/dataset/arrondissements/information/?disjunctive.l_ar&disjunctive.c_arinsee&disjunctive.c_ar)
 [Secteurs des bureaux de vote 2025](https://opendata.paris.fr/explore/dataset/secteurs-des-bureaux-de-vote-2025/map/?location=12,48.85889,2.35638&basemap=jawg.streets)
 PROPRETE
-[Dans ma rue déchets](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742)
+--> indice de propreté [Dans ma rue- Anomalies signalées](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742)
+
+
 [Fontaines](https://opendata.paris.fr/explore/dataset/fontaines-a-boire/information/?disjunctive.type_objet&disjunctive.modele&disjunctive.commune&disjunctive.dispo)
 [Chiottes](https://opendata.paris.fr/explore/dataset/sanisettesparis/map/?disjunctive.type&disjunctive.arrondissement&disjunctive.horaire&disjunctive.acces_pmr&disjunctive.relais_bebe&disjunctive.statut&basemap=jawg.dark&location=12,48.86007,2.34785)
 
@@ -209,3 +211,8 @@ Densité du bâti : âge des batiments
 Carte explicite de l’age
 Carte explicite de la densité
 
+
+Pour voir l'efficacité de la voirie dans Paris on peut étudier la relation entre la voiries et le bâti croisée avec : 
+[ ] le niveau de vie 
+[ ] les transports [RATP]()
+[ ] les déchets ([Dans ma rue- Anomalies signalées](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742))
