@@ -9,54 +9,77 @@ Pour étudier les fortes densités, nous allons nous appuyer sur différentes ba
 
 Lors de ce projet, nous allons notamment nous appuyer sur la [densité du bâti], définie comme la surface de bâtiments utilisable par unité de surface au sol, pour approcher l'activité humaine urbaine ou plutôt son potentiel. A priori, si l'on loge un habitant dans 30 mètres carré, au plus le nombre de mètres carré de bâtiment par kilomètre carré de surface au sol est important, au plus la densité de population maximale est importante. Nous avons choisi de nous appuyer sur cette variable pour mesurer l'activité humaine car la densité de population ne nous semblait pas satisfaisante. En effet, la répartition des bureaux, des habitants, des commerces touristiques (Appartement AirBNB, hôtels) n'est a priori pas uniforme. On pourra faire le lien avec nombreuses autres variables d'urbanisme.
 On pourra également réaliser un état des lieux de la densité de bâti à Paris à différentes échelles.
+
 [Volumes-bâtis :](https://opendata.paris.fr/explore/dataset/volumesbatisparis/map/?location=17,48.84008,2.39706&basemap=jawg.streets)
+
 Cette base de données permet de géolocaliser chaque construction et d'en donner la surface bâtie totale M2_PL_TOT qui correspond au nombre de mètres carré utilisables par bâtiment. Pour un immeuble de 7 étages avec une surface au sol de 200 m2, cette variable vaut donc (7+1)*200 = 1600 m2. En sommant ces surfaces de bâtiments par zone géographique, on peut obtenir la densité de bâti de ces zones.
+
 
 Un point important est le coût du transport. En ce qui concerne l'activité humaine urbaine, on veut vouloir garantir une même qualité de desserte pour un coût minimal. Dans ce cadre, la densité de l'activité est un facteur clé. Une haute densité réduit les surfaces à desservir et les distances.
 
 Relativement aux transports en commun, si l'on souhaite par exemple disposer une station de transport en commun pour chaque carré de 500m par 500m, au plus l'activité est dense, c'est-à-dire se répartit sur une petite surface, au moins il faut bâtir et entretenir un nombre important de stations ainsi qu'un réseau routier ou ferroviaire important, au plus le coût de desserte de l'activité totale est réduit a priori. De plus, si l'on souhaite plutôt disposer une station de transport en commun pour chaque unité d'activité humaine, par exemple de 10 000 habitants, au plus cette activité est concentrée, dense, au plus cette activité est proche de la station de transport en commun, ce qui améliore la qualité de la desserte. Par ailleurs, a priori, au plus une activité importante se déroule à proximité d'une station de transport en commun, au plus elle va être utilisée, ce qui permet d'augmenter la fréquence de la desserte de la station et donc d'améliorer la qualité de la desserte.
 Nous allons donc étudier le lien entre la [densité de la desserte en transports en commun] (stations de métropolitain par kilomètre carré, stations de bus par kilomètre carré) et la densité du bâti. Plus la première densité sera importante, plus l'on considère a priori la desserte comme bonne. Par ailleurs, plus la première est faible en comparaison à la seconde, plus a priori le coût de la desserte d'une unité d'activité humaine est faible, plus l'efficacité de la desserte est bonne.
+
 [Gares et stations du réseau ferré d'Île-de-France (donnée généralisée) :](https://data.iledefrance-mobilites.fr/explore/dataset/emplacement-des-gares-idf-data-generalisee/table/)
+
 Cette base de donnée permet de géolocaliser chaque gares et stations du réseau ferré, donc de géolocaliser l'ensemble des stations de métropolitain, de RER et de tramway présente à Paris et les affilier à des zones géographiques.
+
 [Référentiel des arrêts : Arrêts :](https://data.iledefrance-mobilites.fr/explore/dataset/arrets/table/)
+
 Cette base de données permet de géolocaliser chaque arrêt de bus, de métro, de tramway. On peut utiliser ArRName pour ne sélectionner qu’un arrêt par station et ArRGeopint pour les affilier à des zones géographiques.
 
 A la frontière des transports en commun, on peut placer les réseaux de transports à usage individuel comme le taxi ou les stations de vélos en libre-service. On peut présumer qu'au plus la densité de bâti est importante, au plus ces solutions sont proposées. Mais qu'en est-il vraiment.
+
 [Vélib](https://opendata.paris.fr/explore/dataset/velib-emplacement-des-stations/information/)
+
 [Taxi](https://opendata.paris.fr/explore/dataset/bornes-dappel-taxi/information/)
 
+
 Par ailleurs on peut se demander si les pouvoirs publics ont adapté ou non l'espace public à forte densité en donnant une plus grande part de la surface de stationnement aux moyens de transport individuels économes en place comme les motocyclettes et bicyclettes et en enfouissant davantage de parkings dédiés à l'automobile. On ne s’intéresse pas à la présence de zones piétonnes car le développement des super-blocks à Paris rend progressivement flou le caractère piétonnier ou non d’une rue, les rues à l’intérieur d’un [super-bloc] (https://www.youtube.com/watch?v=ZORzsubQA_M) étant de facto quasiment réservées aux piétons et aux vélos. 
+
 [Stationnement sur voie publique - emprises](https://opendata.paris.fr/explore/dataset/stationnement-sur-voie-publique-emprises/map/?disjunctive.regpri&disjunctive.regpar&disjunctive.typsta&disjunctive.arrond&disjunctive.locsta&disjunctive.zoneres&disjunctive.parite&disjunctive.signhor&disjunctive.signvert&disjunctive.confsign&disjunctive.typemob&basemap=jawg.dark&location=16,48.85864,2.38511)
+
 [Stationnement en ouvrage](https://opendata.paris.fr/explore/dataset/stationnement-en-ouvrage/map/?disjunctive.hauteur_max&disjunctive.gratuit&disjunctive.type_usagers&disjunctive.insee&disjunctive.tarif_pmr&disjunctive.type_ouvrage&disjunctive.info&disjunctive.id_entrees&disjunctive.arrdt&disjunctive.deleg&disjunctive.horaire_na&disjunctive.asc_surf&disjunctive.parc_amod&disjunctive.parc_relai&disjunctive.tarif_pr&disjunctive.tarif_res&disjunctive.zones_res&disjunctive.tf_pr_moto&basemap=jawg.dark&location=12,48.85489,2.39227)
 La question vaut aussi pour la présence de piste cyclables.
+
 [Linéaires d'aménagements cyclables :](https://opendata.paris.fr/explore/dataset/amenagements-cyclables/map/?disjunctive.arrondissement&disjunctive.position_amenagement&disjunctive.vitesse_maximale_autorisee&disjunctive.source&disjunctive.amenagement&location=16,48.85687,2.35247&basemap=jawg.streets)
+
 A noter que dans cette base de données, une piste en double-sens est comptée deux fois. On peut calculer le ratio de distance totale de linéaires de pistes cyclables divisée par la distance totale de voies pour obtenir une approximation du développement des aménagements cyclables. 
 
 Relativement à l'entretien des chaussées, a priori, au plus une activité est dense, au plus le nombre de mètres carré de chaussée nécessaire pour le desservir est faible, ce qui peut permettre d'en diminuer le coût d'entretien par unité d'activité humaine. 
 Nous allons donc étudier le lien entre la [densité du bâti], surface de bâtiments utilisable par unité de surface au sol, et la [densité de chaussée], surface de chaussée par unité de surface au sol.
+
 [Plan de Voirie – chaussée :](https://opendata.paris.fr/explore/dataset/plan-de-voirie-chaussees/map/?disjunctive.num_pave&basemap=jawg.dark&location=17,48.86156,2.40738)
+
 Cette base de données contient la forme géométrique de toutes les chaussées. Cela permet pour chaque aire géographique de connaître la surface de chaussée utilisée pour la desserte. On utilise geo_shape qui donne la forme géométrique de chaque chaussée, ce qui nous permet d’allouer chaque partie d’une rue à tel ou tel quartier, arrondissement, telle ou telle zone géographique. On peut vouloir corriger cette donnée en y retranchant les surfaces de stationnement, lesquelles demandent un entretien a priori moindre. (On peut laisser le bitume de la zone de stationnement dans un état calamiteux sans perte d'utilité.)
+
 
 Cependant, il nous semble important d'introduire une troisième notion de [densité de maillage routier], définie en nombre de kilomètres de voiries par kilomètre carré au sol. Cette variable donne une indication sur la structure de la desserte vicinale et le type d’urbanisme. En effet, on peut se demander si pour une même densité de bâti, il est préférable d'avoir une multitude de petites rues et de petits îlots urbains (=pâtés de maison), c'est-à-dire une grande densité de maillage routier, afin de minimiser la densité de chaussée, ou s'il est préférable d'avoir quelques larges rues et de grands îlots urbains. L'objectif est de trouver la structure de desserte et de bâti qui permet améliorer le ratio surface de chaussée/surface de bâti utilisable, pour chaque densité de bâti.
 Croiser cette information avec les deux précédentes va peut-être permettre de trouver la structure de desserte et de bâti qui permet améliorer le ratio surface de chaussée/surface de bâti utilisable, pour chaque densité de bâti. Nous allons donc étudier le lien entre la [densité de maillage routier], la [densité du bâti] et la [densité de chaussée].
+
 [Tronçons de voie](https://opendata.paris.fr/explore/dataset/troncon_voie/information/)
 Cette base de données permet de connaître les longueurs de chaussée ainsi que leur géolocalisation, ce qui permet d'affilier les différentes longueurs de chaussées à des zones géographiques.
 
 
 
 
-Cependant, il ne faut pas se borner à cette étude. En effet, l'accès à des espaces verts, de la verdure et la propreté sont des aspects importants de la qualité d'un lieu.
+Par ailleurs, il ne faut pas se borner à cette étude. En effet, l'accès à des espaces verts, de la verdure et la propreté sont des aspects importants de la qualité d'un lieu.
 
 Ce faisant, nous allons étudier le lien entre la densité de bâti, la densité du maillage routier et le nombre de signalement d'anomalies dans les rues via l'application "Dans ma rue". Cela permet a priori d'obtenir un ordre d'idée de la perception de saleté des différents endroits.
+
 [Dans ma rue- Anomalies signalées](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742)
+
 Chacun des signalements étant géolocalisé, on peut l'affilier à une zone géographique. Cependant, si l'arrondissement est directement disponible, il faut traduire l'adresse postale en coordonnées géographiques afin de positionner un signalement.
 
 Egalement, nous allons étudier le lien entre la densité de bâti, du maillage routier et la présence d'arbres et d'espaces verts. Pour être plus précis, nous allons nous intéresser à la présence d'arbres dans les rues en fonction de la densité du maillage routier et donc au nombre d'arbres dans les rues au kilomètre carré.  Cette donnée permet de mesurer le degré d’artificialisation et donc mesurer une forme de qualité de vie. L’idée est de regarder alors le lien avec la densité du bâti et le type de maillage. (Est-ce que beaucoup de petites rues (probablement plus étroites) permettent de mettre plus ou moins d’arbre, et avec quel effet sur la densité du bâti ?)
 Nous allons décompter les arbres présents en dehors des espaces verts afin de donner une approximation de la verdure perçue au quotidien, en dehors des grandes pauses. Nous allons également mesurer la part de la surface allouée aux espaces verts pour les différentes zones géographiques intra-muros.
 
 [Arbres :](https://opendata.paris.fr/explore/dataset/les-arbres/information/?disjunctive.espece&disjunctive.typeemplacement&disjunctive.arrondissement&disjunctive.genre&disjunctive.libellefrancais&disjunctive.varieteoucultivar&disjunctive.stadedeveloppement&disjunctive.remarquable)
+
 Cette base de données répertorie et géolocalise tous les arbres de Paris. Contrairement aux autres bases de données concernant les arbres de la ville de Paris, elle semble bien exhaustive. Notamment, c’est la seule à indiquer une quantité décente d’arbre sur les contre-allées du cour de Vincennes.
+
 [PLU bioclimatique - Sous-secteur de déficit d'arbres et d'espaces végétalisés :](https://opendata.paris.fr/explore/dataset/plub_srv_daev/map/?basemap=jawg.dark&location=12,48.86167,2.33815)
+
 Cette base répertorie les secteurs jugés en déficit d'arbres par le PLU bioclimatique.
 [Ilots de fraîcheur - Espaces verts "frais" :](https://opendata.paris.fr/explore/dataset/ilots-de-fraicheur-espaces-verts-frais/map/?disjunctive.arrondissement&disjunctive.ouvert_24h&disjunctive.horaires_periode&disjunctive.statut_ouverture&disjunctive.canicule_ouverture&disjunctive.ouverture_estivale_nocturne&disjunctive.type&basemap=jawg.dark&location=12,48.83422,2.40086)
 Cette base de données répertorie l'ensemble des espaces verts de Paris. Contrairement aux bases données de la ville de Paris prévue à cet effet, elle comptabilise bien le jardin du Luxembourg, le jardin des plantes.
