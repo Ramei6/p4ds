@@ -1,6 +1,6 @@
 import requests
 import json
-import pandasas pd
+import pandas as pd
 
 # url de l'API 
 url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/emprise-batie-et-non-batie/records?limit=20&refine=l_src%3A%22Fiche%20parcellaire%20et%20terrain%20certifi%C3%A9%22"
