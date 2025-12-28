@@ -112,7 +112,7 @@ SECTEURS
 [école élémentaire](https://opendata.paris.fr/explore/dataset/etablissements-scolaires-ecoles-elementaires/information/?disjunctive.arr_libelle&disjunctive.annee_scol&disjunctive.id_projet&disjunctive.arr_insee&disjunctive.type_etabl)
 [Quartiers administratifs](https://opendata.paris.fr/explore/dataset/quartier_paris/information/?disjunctive.c_ar)
 [Arrondissements](https://opendata.paris.fr/explore/dataset/arrondissements/information/?disjunctive.l_ar&disjunctive.c_arinsee&disjunctive.c_ar)
-[Secteurs des bureaux de vote 2025](https://opendata.paris.fr/explore/dataset/secteurs-des-bureaux-de-vote-2025/map/?location=12,48.85889,2.35638&basemap=jawg.streets)
+[Secteurs des bure"<éaux de vote 2025](https://opendata.paris.fr/explore/dataset/secteurs-des-bureaux-de-vote-2025/map/?location=12,48.85889,2.35638&basemap=jawg.streets)
 PROPRETE
 --> indice de propreté [Dans ma rue- Anomalies signalées](https://opendata.paris.fr/explore/dataset/dans-ma-rue/map/?disjunctive.conseilquartier&disjunctive.intervenant&disjunctive.type&disjunctive.soustype&disjunctive.arrondissement&disjunctive.prefixe&disjunctive.code_postal&basemap=jawg.dark&location=12,48.85899,2.34742)
 
