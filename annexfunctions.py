@@ -144,6 +144,144 @@ def aggregate_by_geographic_division(data_gdf, geo_divisions_gdf, value_column, 
 
     return result
 
+def load_non_buildable_areas():
+    """
+    Load and union non-buildable areas (water bodies and railways).
+
+    Returns:
+    --------
+    GeoDataFrame
+        Union of all non-buildable geometries
+    """
+    print("Loading non-buildable areas...")
+
+    # Load water bodies
+    print("  Loading water bodies...")
+    water_url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plan-de-voirie-voies-deau/exports/csv?lang=fr&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
+    water_df = pd.read_csv(water_url, sep=";")
+
+    # Use 'geo_shape' column as identified from analysis
+    geom_col_water = 'geo_shape'
+
+    water_gdf = gpd.GeoDataFrame(
+        water_df.dropna(subset=[geom_col_water]),
+        geometry=water_df[geom_col_water].dropna().apply(parse_geometry),
+        crs='EPSG:4326'
+    ).to_crs('EPSG:2154')
+    water_gdf = water_gdf[water_gdf.geometry.is_valid]
+    print(f"  Loaded {len(water_gdf)} water body geometries")
+
+    # Load railways
+    print("  Loading railways...")
+    rail_url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plan-de-voirie-emprises-ferroviaires/exports/csv?lang=fr&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
+    rail_df = pd.read_csv(rail_url, sep=";")
+
+    # Use 'geo_shape' column as identified from analysis
+    geom_col_rail = 'geo_shape'
+
+    rail_gdf = gpd.GeoDataFrame(
+        rail_df.dropna(subset=[geom_col_rail]),
+        geometry=rail_df[geom_col_rail].dropna().apply(parse_geometry),
+        crs='EPSG:4326'
+    ).to_crs('EPSG:2154')
+    rail_gdf = rail_gdf[rail_gdf.geometry.is_valid]
+    print(f"  Loaded {len(rail_gdf)} railway geometries")
+
+    # Union all non-buildable geometries
+    print("  Creating union of non-buildable areas...")
+
+    # Combine all geometries
+    all_geoms = []
+    if not water_gdf.empty:
+        all_geoms.append(water_gdf.unary_union)
+    if not rail_gdf.empty:
+        all_geoms.append(rail_gdf.unary_union)
+
+    if all_geoms:
+        union_geom = gpd.GeoSeries(all_geoms).union_all()
+        all_non_buildable = gpd.GeoDataFrame(
+            {'geometry': [union_geom]},
+            crs='EPSG:2154'
+        )
+    else:
+        # Fallback if no geometries
+        all_non_buildable = gpd.GeoDataFrame(
+            {'geometry': []},
+            crs='EPSG:2154'
+        )
+
+    print(f"  Non-buildable areas loaded: {len(all_non_buildable)} features")
+    return all_non_buildable
+
+def create_buildable_geometries(geo_divisions_gdf, non_buildable_gdf):
+    """
+    Create buildable area geometries by subtracting non-buildable areas.
+
+    Parameters:
+    -----------
+    geo_divisions_gdf : GeoDataFrame
+        Original geographic divisions
+    non_buildable_gdf : GeoDataFrame
+        Non-buildable areas to subtract
+
+    Returns:
+    --------
+    GeoDataFrame
+        Geographic divisions with buildable geometries and areas
+    """
+    result = geo_divisions_gdf.copy()
+
+    # Ensure both are in the same CRS
+    if result.crs != non_buildable_gdf.crs:
+        result = result.to_crs(non_buildable_gdf.crs)
+
+    # Create buildable geometries
+    buildable_geoms = []
+    for geom in result.geometry:
+        # Subtract non-buildable areas from each geographic division
+        buildable_geom = geom
+        for non_buildable_geom in non_buildable_gdf.geometry:
+            try:
+                buildable_geom = buildable_geom.difference(non_buildable_geom)
+            except:
+                continue  # Skip if difference fails
+        buildable_geoms.append(buildable_geom)
+
+    result['buildable_geometry'] = buildable_geoms
+    buildable_series = gpd.GeoSeries(buildable_geoms, crs=result.crs)
+    result['buildable_area_m2'] = buildable_series.area
+
+    # Calculate percentage of buildable area
+    original_area = result.geometry.area
+    result['buildable_percentage'] = (result['buildable_area_m2'] / original_area * 100).round(1)
+
+    return result
+
+def create_buildable_geodataframe(geo_divisions_gdf, non_buildable_gdf):
+    """
+    Create a GeoDataFrame with buildable geometries as the active geometry column.
+
+    Parameters:
+    -----------
+    geo_divisions_gdf : GeoDataFrame
+        Original geographic divisions
+    non_buildable_gdf : GeoDataFrame
+        Non-buildable areas to subtract
+
+    Returns:
+    --------
+    GeoDataFrame
+        Geographic divisions with buildable geometries as active geometry
+    """
+    # Create buildable geometries
+    buildable_gdf = create_buildable_geometries(geo_divisions_gdf, non_buildable_gdf)
+
+    # Create new GeoDataFrame with buildable geometries as active geometry
+    buildable_result = buildable_gdf.set_geometry('buildable_geometry').copy()
+    buildable_result.crs = geo_divisions_gdf.crs  # Ensure CRS is set
+
+    return buildable_result
+
 def calculate_density(gdf, value_column, area_crs='EPSG:2154'):
     """
     Calculate density for a GeoDataFrame with aggregated values.
@@ -172,12 +310,47 @@ def calculate_density(gdf, value_column, area_crs='EPSG:2154'):
     # Calculate area in km²
     result['area_km2'] = temp_gdf.geometry.area / 1_000_000
 
-    # Calculate density
+    # Calculate density: building area / total area
     density_col = f'{value_column}_density_km2'
     result[density_col] = result[value_column] / result['area_km2']
 
     # Handle infinite and NaN values
     result[density_col] = result[density_col].replace([float('inf'), -float('inf')], 0).fillna(0)
+
+    # Also provide density in proper m²/m² units (divide by 1M to avoid millions)
+    result[f'{value_column}_density_m2_m2'] = result[density_col] / 1_000_000
+
+    return result
+
+def calculate_corrected_density(gdf, value_column, buildable_area_column='buildable_area_m2'):
+    """
+    Calculate corrected density using buildable area instead of total area.
+
+    Parameters:
+    -----------
+    gdf : GeoDataFrame
+        GeoDataFrame with aggregated values and buildable areas
+    value_column : str
+        Column containing the values to calculate density for
+    buildable_area_column : str
+        Column containing buildable area in m²
+
+    Returns:
+    --------
+    GeoDataFrame
+        Input GeoDataFrame with corrected density columns
+    """
+    result = gdf.copy()
+
+    # Calculate corrected density: building_volume ÷ buildable_area
+    corrected_density_col = f'{value_column}_corrected_density_m2_m2'
+    result[corrected_density_col] = result[value_column] / result[buildable_area_column]
+
+    # Handle infinite and NaN values
+    result[corrected_density_col] = result[corrected_density_col].replace([float('inf'), -float('inf')], 0).fillna(0)
+
+    # Also provide density in more readable units (multiply by 1M for m²/km² equivalent)
+    result[f'{value_column}_corrected_density_readable'] = result[corrected_density_col] * 1_000_000
 
     return result
 
