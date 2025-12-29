@@ -144,6 +144,143 @@ def aggregate_by_geographic_division(data_gdf, geo_divisions_gdf, value_column, 
 
     return result
 
+def load_green_spaces():
+    """
+    Load and union green space areas from three different datasets.
+
+    Returns:
+    --------
+    GeoDataFrame
+        Union of all green space geometries
+    """
+    print("Loading green spaces...")
+
+    # Dataset 1: Plan de voirie - Emprises espaces verts
+    print("  Loading roadway green spaces...")
+    green1_url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/plan-de-voirie-emprises-espaces-verts/exports/csv?lang=fr&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
+    green1_df = pd.read_csv(green1_url, sep=";")
+
+    green1_gdf = gpd.GeoDataFrame(
+        green1_df.dropna(subset=['geo_shape']),
+        geometry=green1_df['geo_shape'].dropna().apply(parse_geometry),
+        crs='EPSG:4326'
+    ).to_crs('EPSG:2154')
+    green1_gdf = green1_gdf[green1_gdf.geometry.is_valid]
+    print(f"  Loaded {len(green1_gdf)} roadway green space geometries")
+
+    # Dataset 2: Espaces verts et assimilés
+    print("  Loading green spaces and assimilated...")
+    green2_url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/espaces_verts/exports/csv?lang=fr&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
+    green2_df = pd.read_csv(green2_url, sep=";")
+
+    print(f"  Dataset 2 columns: {green2_df.columns.tolist()}")
+    print(f"  Dataset 2 shape: {green2_df.shape}")
+    print(f"  First few rows:")
+    print(green2_df.head(2))
+
+    # Try different geometry column names (more flexible search)
+    geom_col_green2 = None
+    for col in green2_df.columns:
+        col_clean = col.lower().replace(' ', '').replace('_', '')
+        if 'geoshape' in col_clean or 'geom' in col_clean or 'geometry' in col_clean:
+            geom_col_green2 = col
+            break
+
+    if geom_col_green2 is None:
+        print("  ❌ CONCLUSION: This dataset contains only tabular address data, no geometry information.")
+        print("  This dataset provides green space information but not spatial geometries.")
+        print("  Skipping this dataset as it cannot be used for spatial exclusion.")
+        green2_gdf = gpd.GeoDataFrame([], geometry=[], crs='EPSG:2154')
+    else:
+        print(f"  ✓ Found geometry column: {geom_col_green2}")
+        green2_gdf = gpd.GeoDataFrame(
+            green2_df.dropna(subset=[geom_col_green2]),
+            geometry=green2_df[geom_col_green2].dropna().apply(parse_geometry),
+            crs='EPSG:4326'
+        ).to_crs('EPSG:2154')
+        green2_gdf = green2_gdf[green2_gdf.geometry.is_valid]
+        print(f"  Loaded {len(green2_gdf)} green space geometries (using column '{geom_col_green2}')")
+
+    # Dataset 3: Ilots de fraîcheur - Espaces verts "frais"
+    print("  Loading fresh air green spaces...")
+    green3_url = "https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/ilots-de-fraicheur-espaces-verts-frais/exports/csv?lang=fr&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B"
+    green3_df = pd.read_csv(green3_url, sep=";")
+
+    green3_gdf = gpd.GeoDataFrame(
+        green3_df.dropna(subset=['geo_shape']),
+        geometry=green3_df['geo_shape'].dropna().apply(parse_geometry),
+        crs='EPSG:4326'
+    ).to_crs('EPSG:2154')
+    green3_gdf = green3_gdf[green3_gdf.geometry.is_valid]
+    print(f"  Loaded {len(green3_gdf)} fresh air green space geometries")
+
+    # Union all green space geometries
+    print("  Creating union of green spaces...")
+
+    all_green_geoms = []
+    if not green1_gdf.empty:
+        all_green_geoms.append(green1_gdf.unary_union)
+    if not green2_gdf.empty:
+        all_green_geoms.append(green2_gdf.unary_union)
+    if not green3_gdf.empty:
+        all_green_geoms.append(green3_gdf.unary_union)
+
+    if all_green_geoms:
+        union_geom = gpd.GeoSeries(all_green_geoms).union_all()
+        all_green_spaces = gpd.GeoDataFrame(
+            {'geometry': [union_geom]},
+            crs='EPSG:2154'
+        )
+    else:
+        all_green_spaces = gpd.GeoDataFrame(
+            {'geometry': []},
+            crs='EPSG:2154'
+        )
+
+    print(f"  Green spaces loaded: {len(all_green_spaces)} features")
+    return all_green_spaces
+
+def load_all_nonbuildable_areas():
+    """
+    Load and union all non-buildable areas (water bodies, railways, and green spaces).
+
+    Returns:
+    --------
+    tuple
+        (all_non_buildable_gdf, green_spaces_gdf)
+    """
+    print("Loading all non-buildable areas (water + railways + green spaces)...")
+
+    # Load water and railways
+    non_buildable_no_green = load_non_buildable_areas()
+
+    # Load green spaces
+    green_spaces = load_green_spaces()
+
+    # Combine all non-buildable areas
+    print("  Creating union of all non-buildable areas...")
+
+    all_geoms = []
+    if not non_buildable_no_green.empty:
+        all_geoms.append(non_buildable_no_green.unary_union)
+    if not green_spaces.empty:
+        all_geoms.append(green_spaces.unary_union)
+
+    if all_geoms:
+        union_geom = gpd.GeoSeries(all_geoms).union_all()
+        all_non_buildable = gpd.GeoDataFrame(
+            {'geometry': [union_geom]},
+            crs='EPSG:2154'
+        )
+    else:
+        all_non_buildable = gpd.GeoDataFrame(
+            {'geometry': []},
+            crs='EPSG:2154'
+        )
+
+    print(f"  All non-buildable areas loaded: {len(all_non_buildable)} features")
+    return all_non_buildable, green_spaces
+
 def load_non_buildable_areas():
     """
     Load and union non-buildable areas (water bodies and railways).
