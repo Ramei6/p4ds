@@ -84,7 +84,7 @@ def create_building_density_map(buildings, geo_divisions, geo_level='arrondissem
         density_col,
         geo_level,
         title=title,
-        save_path=f'building_density_{geo_level}.html'
+        save_path=f'Data/building_density_{geo_level}.html'
     )
 
     return aggregated_with_density, map_obj
@@ -162,7 +162,7 @@ def create_corrected_building_density_map(buildings, geo_divisions, non_buildabl
         geo_level,
         non_buildable_gdf=non_buildable_gdf,  # Pass non-buildable areas for overlay
         title=title,
-        save_path=f'building_density_corrected_{geo_level}.html'
+        save_path=f'Data/building_density_corrected_{geo_level}.html'
     )
 
     return final_data, map_obj
@@ -243,7 +243,7 @@ def create_ultra_corrected_building_density_map(buildings, geo_divisions, geo_le
         all_non_buildable_gdf=all_non_buildable,  # Pass all non-buildable areas for overlay
         green_spaces_gdf=green_spaces,  # Pass green spaces for separate overlay
         title=title,
-        save_path=f'building_density_ultra_corrected_{geo_level}.html'
+        save_path=f'Data/building_density_ultra_corrected_{geo_level}.html'
     )
 
     return final_data, map_obj
@@ -778,11 +778,3 @@ def main():
 if __name__ == "__main__":
     # Run the main analysis
     results = main()
-
-    # Import and run data analysis if available
-    try:
-        from data_analysis import create_data_analysis
-        print("\n5. Creating data analysis and visualizations...")
-        create_data_analysis(results)
-    except ImportError:
-        print("\nNote: data_analysis.py not found - run create_data_analysis.py to generate plots and export data")

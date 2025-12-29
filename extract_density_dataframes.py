@@ -500,10 +500,6 @@ def main():
     save_dataframes(arr_df, quartiers_df, iris_df)
 
     print("\nFiles saved to 'data/' directory:")
-    print("- paris_arrondissements_complete.csv/.parquet")
-    print("- paris_quartiers_complete.csv/.parquet")
-    print("- paris_iris_complete.csv/.parquet")
-
     print("\n" + "="*80)
 
     return arr_df, quartiers_df, iris_df
