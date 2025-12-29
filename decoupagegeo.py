@@ -428,33 +428,17 @@ def visualize_corrected_building_density(aggregated_gdf, density_column, geo_lev
             ref_col = 'id'
             ref_label = 'Zone'
 
-        # Custom color scheme for IRIS level to handle outliers better
-        if geo_level == 'iris':
-            # Create custom bins for monochrome scale optimized for 0-6 range
-            # with special handling for outliers (like 9+ density values)
-            density_values = gdf_4326[density_column].dropna()
-
-            # Define bins: 0, 1, 2, 3, 4, 5, and outliers (7+)
-            bins = [0, 1.5, 2.5, 3, 3.5, 5, density_values.max() + 1] if len(density_values) > 0 else None
-
-            # Use a monochrome blue scale for main values, red for outliers
-            # Folium doesn't support custom color schemes easily, so we'll use a sequential scheme
-            fill_color = 'Blues'  # Monochrome blue scale
-
-            # Add a note about the color scheme in the legend
-            legend_name = 'Densité corrigée (m²/m²) - Échelle monochrome 0-4, valeurs élevées distinctes'
-        else:
-            # For other levels, use quantile-based bins as before
-            density_values = gdf_4326[density_column].dropna()
-            if len(density_values) > 0:
-                bins = list(density_values.quantile([0, 0.2, 0.4, 0.6, 0.8, 1.0]))
-                if len(set(bins)) < 3:
-                    bins = None
-            else:
+        # Use consistent YlOrRd color scheme for all levels
+        density_values = gdf_4326[density_column].dropna()
+        if len(density_values) > 0:
+            bins = list(density_values.quantile([0, 0.2, 0.4, 0.6, 0.8, 1.0]))
+            if len(set(bins)) < 3:
                 bins = None
+        else:
+            bins = None
 
-            fill_color = 'YlOrRd'  # Yellow-orange-red color scheme
-            legend_name = 'Densité corrigée (m²/m²)'
+        fill_color = 'YlOrRd'  # Yellow-orange-red color scheme for all maps
+        legend_name = 'Densité corrigée (m²/m²)'
 
         choropleth = folium.Choropleth(
             geo_data=gdf_4326.__geo_interface__,
@@ -604,29 +588,17 @@ def visualize_ultra_corrected_building_density(aggregated_gdf, density_column, g
             ref_col = 'id'
             ref_label = 'Zone'
 
-        # Custom color scheme for IRIS level to handle outliers better
-        if geo_level == 'iris':
-            # Create custom bins for monochrome scale optimized for 0-6 range
-            # with special handling for outliers (like 9+ density values)
-            density_values = gdf_4326[density_column].dropna()
-
-            # Define bins: 0, 1, 2, 3, 4, 5, and outliers (7+)
-            bins = [0, 1.5, 2.5, 3, 3.5, 5, density_values.max() + 1] if len(density_values) > 0 else None
-
-            fill_color = 'Blues'  # Monochrome blue scale
-            legend_name = 'Densité ultra-corrigée (m²/m²) - Échelle monochrome 0-4, valeurs élevées distinctes'
-        else:
-            # For other levels, use quantile-based bins
-            density_values = gdf_4326[density_column].dropna()
-            if len(density_values) > 0:
-                bins = list(density_values.quantile([0, 0.2, 0.4, 0.6, 0.8, 1.0]))
-                if len(set(bins)) < 3:
-                    bins = None
-            else:
+        # Use consistent YlOrRd color scheme for all levels
+        density_values = gdf_4326[density_column].dropna()
+        if len(density_values) > 0:
+            bins = list(density_values.quantile([0, 0.2, 0.4, 0.6, 0.8, 1.0]))
+            if len(set(bins)) < 3:
                 bins = None
+        else:
+            bins = None
 
-            fill_color = 'YlOrRd'
-            legend_name = 'Densité ultra-corrigée (m²/m²)'
+        fill_color = 'YlOrRd'  # Yellow-orange-red color scheme for all maps
+        legend_name = 'Densité ultra-corrigée (m²/m²)'
 
         choropleth = folium.Choropleth(
             geo_data=gdf_4326.__geo_interface__,
@@ -728,11 +700,23 @@ def visualize_ultra_corrected_building_density(aggregated_gdf, density_column, g
 
 def main():
     """
-    Main function to generate all Paris building density maps.
+    Main function to generate all Paris building density maps and return processed data.
+
+    Returns:
+    --------
+    dict
+        Dictionary containing all processed DataFrames organized by geographic level
     """
     print("=" * 60)
     print("PARIS BUILDING DENSITY ANALYSIS")
     print("=" * 60)
+
+    # Initialize results dictionary
+    results = {
+        'arrondissements': {},
+        'quartiers': {},
+        'iris': {}
+    }
 
     # Load geographic layers
     print("\n1. Loading geographic layers...")
@@ -759,15 +743,18 @@ def main():
 
         # Create raw density map
         print("Creating raw density map...")
-        create_building_density_map(buildings, geo_divisions, geo_level)
+        raw_data, _ = create_building_density_map(buildings, geo_divisions, geo_level)
+        results[geo_level]['raw'] = raw_data
 
         # Create corrected density map (excluding water + railways)
         print("Creating corrected density map...")
-        create_corrected_building_density_map(buildings, geo_divisions, non_buildable, geo_level)
+        corrected_data, _ = create_corrected_building_density_map(buildings, geo_divisions, non_buildable, geo_level)
+        results[geo_level]['corrected'] = corrected_data
 
         # Create ultra-corrected density map (excluding water + railways + green spaces)
         print("Creating ultra-corrected density map...")
-        create_ultra_corrected_building_density_map(buildings, geo_divisions, geo_level)
+        ultra_corrected_data, _ = create_ultra_corrected_building_density_map(buildings, geo_divisions, geo_level)
+        results[geo_level]['ultra_corrected'] = ultra_corrected_data
 
     print("\n" + "=" * 60)
     print("COMPLETED: All building density maps created")
@@ -785,6 +772,17 @@ def main():
     print("- building_density_ultra_corrected_iris.html")
     print("=" * 60)
 
+    return results
+
 
 if __name__ == "__main__":
-    main()
+    # Run the main analysis
+    results = main()
+
+    # Import and run data analysis if available
+    try:
+        from data_analysis import create_data_analysis
+        print("\n5. Creating data analysis and visualizations...")
+        create_data_analysis(results)
+    except ImportError:
+        print("\nNote: data_analysis.py not found - run create_data_analysis.py to generate plots and export data")
