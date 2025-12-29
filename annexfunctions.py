@@ -34,8 +34,8 @@ def InArrondissement(nb_arrondissement):
         path + "arrets.csv",
         sep=';',
         usecols=[
-            'ArRName', 'ArRType', 'ArRTown',
-            'ArRPostalRegion', 'ArRGeopoint'
+            'ArRName', 'ArRType', 
+            'ArRPostalRegion'
         ]
     )
 
@@ -69,8 +69,29 @@ def nb_tram_station(nb_arrondissement):
     nb_station = df[df["ArRType"].str.strip()== 'tram']["ArRName"].count()
     return nb_station
 
+
 def nb_train_station(nb_arrondissement):
     df = InArrondissement(nb_arrondissement)
     nb_station = df[df["ArRType"].str.strip()== 'rail']["ArRName"].count()
     return nb_station
+
+
+def TaxiInArrondissement(nb_arrondissement):
+    df_taxi = pd.read_csv(
+        path +"bornes-dappel-taxi.csv",
+        sep=';',
+        usecols=[
+            'nom', 'insee', 'emplacements'
+        ]
+    )
+
+    # Sécurisation + extraction de l’arrondissement
+    mask = (
+        (df_taxi["insee"] >= 75000) &
+        (df_taxi["insee"] < 76000) &
+        (df_taxi["insee"] % 100 == nb_arrondissement)
+    )
+
+    df_taxi_arrondissement = df_taxi.loc[mask]
+    return df_taxi_arrondissement["emplacements"].sum()
 ##########################################################################
